@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        GO_PATH = "/usr/local/go/bin"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,16 +14,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'go build -C app -o myapp'
+                sh '${GO_PATH}/go build -C app -o myapp'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'go test ./...'
+                sh '${GO_PATH}/go test ./...'
             }
         }
-
         stage('Deploy') {
             steps {
                 // Add deployment steps here

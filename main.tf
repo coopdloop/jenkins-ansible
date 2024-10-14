@@ -119,6 +119,10 @@ resource "aws_instance" "jenkins_server" {
               sudo apt update
               sudo apt install -y fontconfig openjdk-17-jre
 
+
+              # Install Go
+              sudo apt install -y golang-go
+
               # Install Jenkins
               sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
                 https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
