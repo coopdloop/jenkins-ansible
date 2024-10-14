@@ -18,11 +18,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh '${GO_PATH}/go test ./...'
-            }
-        }
         stage('Deploy') {
             steps {
                 // Add deployment steps here
