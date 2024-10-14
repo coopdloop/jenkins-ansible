@@ -1,0 +1,53 @@
+# deploy_app.yml
+
+- hosts: app_server
+  become: yes
+  vars:
+    go_version: "1.16.4"
+    app_dir: "/opt/myapp"
+    github_repo: "https://github.com/coopdloop/jenkins-ansible"
+
+  tasks:
+    - name: Install Go
+      ansible.builtin.unarchive:
+        src: "https://golang.org/dl/go{{ go_version }}.linux-amd64.tar.gz"
+        dest: "/usr/local"
+        remote_src: yes
+
+    - name: Set Go environment variables
+      ansible.builtin.lineinfile:
+        path: /etc/profile
+        line: "{{ item }}"
+      loop:
+        - 'export PATH=$PATH:/usr/local/go/bin'
+        - 'export GOPATH=$HOME/go'
+
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Clone application repository
+      ansible.builtin.git:
+        repo: "{{ github_repo }}"
+        dest: "{{ app_dir }}"
+        version: main
+
+    - name: Build Go application
+      ansible.builtin.command:
+        cmd: go build -o myapp
+        chdir: "{{ app_dir }}"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
+
+    - name: Set up systemd service
+      ansible.builtin.template:
+        src: myapp.service.j2
+        dest: /etc/systemd/system/myapp.service
+
+    - name: Start and enable myapp service
+      ansible.builtin.systemd:
+        name: myapp
+        state: started
+        enabled: yes

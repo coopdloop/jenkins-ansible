@@ -1,0 +1,15 @@
+# templates/myapp.service.j2
+
+[Unit]
+Description=My Go Application
+After=network.target
+
+[Service]
+ExecStart={{ app_dir }}/myapp
+WorkingDirectory={{ app_dir }}
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
