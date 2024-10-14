@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'go build ./... -o myapp'
+                sh 'go build -C app -o myapp'
             }
         }
 

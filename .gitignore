@@ -41,3 +41,8 @@ terraform.rc
 # Secrets
 
 jenkins_key.pem
+
+
+# binaries
+
+app/myapp
