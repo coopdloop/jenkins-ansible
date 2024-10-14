@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GO_PATH = "/usr/local/go/bin"
+        GO_PATH = "/usr/bin"
     }
 
     stages {
