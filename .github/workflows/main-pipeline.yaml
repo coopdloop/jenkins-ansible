@@ -3,10 +3,10 @@
 name: 00 CI/CD Pipeline
 
 on:
-  # push:
-  #   branches: [ main ]
-  pull_request:
+  push:
     branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
   build-and-test:
